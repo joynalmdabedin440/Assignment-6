@@ -4,6 +4,7 @@ const allCategoryLoad = () => {
     fetch(url)
         .then(res => res.json())
         .then(data => allCategoryDisplay(data.data.news_category))
+        .catch(error => console.log(error))
 }
 
 // category append section
@@ -12,7 +13,7 @@ const allCategoryDisplay = (categories) => {
 
     categories.forEach(category => {
         const div = document.createElement('div');
-        div.classList.add('col-lg-1','col-sm-6','col-md-4');
+        div.classList.add('col-lg-1', 'col-sm-6', 'col-md-4');
         div.innerHTML = ` 
         <button onclick="allNewsLoad('${category.category_id}')" class="m-2 gap-2 border-0 bg-white fs-4">${category.category_name
             }</button>
@@ -36,13 +37,13 @@ const allNewsDisplay = (allData) => {
     const allNews = document.getElementById('all-news');
     allNews.innerHTML = '';
     allData.forEach(data => {
-        console.log(data);
+
         const div = document.createElement('div');
-        
-        div.classList.add('col-lg-4','col-sm-1','col-md-6',);
-        
+
+        div.classList.add('col-lg-6', 'col-sm-12', 'col-md-12',);
+
         div.innerHTML = `
-        <div class="card mb-3" style="max-width: 540px;">
+        <div onclick="newsDetailLoad('${data._id}')" class="card mb-3" style="max-width: 540px;" data-bs-toggle="modal" data-bs-target="#detailModal">
        <div class="row g-0">
        <div class="col-md-4">
        <img src="${data.thumbnail_url}" class=" w-100 h-100 rounded-start" alt="...">
@@ -50,19 +51,19 @@ const allNewsDisplay = (allData) => {
        <div class="col-md-8">
        <div class="card-body">
         <h5 class="card-title">${data.title}</h5>
-        <p class="card-text" >${data.details.slice(0,200)
-        }</p>
+        <p class="card-text" >${data.details.slice(0, 200)
+            }</p>
         <div class="d-flex justify-content-between">
             <div class="d-flex">
                 <img class="rounded-circle w-25 h-50" src="${data.image_url}" alt="" >
                 <div class="px-2">
-                    <p class="mb-0">${data.author.name}</p>
-                    <p class="text-primary">${data.author.published_date}</p>
+                    <p class="mb-0">${data.author.name ? data.author.name : 'no name found'}</p>
+                    <p class="text-primary">${data.author.published_date ? data.author.published_date : 'date note found'}</p>
                 </div>
             </div>
             <div class="d-flex">
                 <p>views: </p>
-                <p> ${data.total_view}</p>
+                <p> ${data.total_view ? data.total_view : '0'}</p>
             </div>
         </div> 
        </div>
@@ -73,10 +74,37 @@ const allNewsDisplay = (allData) => {
         allNews.appendChild(div);
     });
 
-    // news open in modal section
+}
 
+// news open in modal section
+const newsDetailLoad = (id) => {
+    const url = `https://openapi.programming-hero.com/api/news/${id}`
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(data => modalOpen (data.data))
+        .catch(error => console.log(error))
+}
+const modalOpen = (data) => {
+    const title = document.getElementById('detailModalLabel');
+    title.innerText = data[0].title
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
+     <img class="w-100" src="${data[0].image_url}" alt="">
 
-   
+     <h3>${data[0].author.name ? data[0].author.name:'Name not Found'
+     }</h3>
+     <p>${data[0].author.published_date ? data[0].author.published_date:'Pubshil date not Found'
+     }</p>
+     <p>view: ${data[0].total_view
+        ? data[0].total_view
+        :'No viewer Found'
+     }</p>
+
+     <p>${data[0].details
+     }</p>
+    `
+
 }
 
 allCategoryLoad();

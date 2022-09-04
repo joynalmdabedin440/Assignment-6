@@ -37,11 +37,13 @@ const allNewsLoad = (id) => {
 
 // news display section
 const allNewsDisplay = (allData) => {
-    console.log(allData.length);
-    
+    console.log(allData);
+    const sorting=allData.sort((a, b) => b.total_view - a.total_view);
+
     const allNews = document.getElementById('all-news');
     allNews.innerHTML = '';
     allData.forEach(data => {
+        
 
         const div = document.createElement('div');
 

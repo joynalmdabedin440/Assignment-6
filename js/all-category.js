@@ -46,14 +46,14 @@ const newsCount = document.getElementById('news-count');
 const allNewsDisplay = (allData) => {
 
     newsCount.innerHTML = `
-           <h3>${allData.length}</h3>
+           <h3>${allData.length ? allData.length:'No '} Result Found</h3>
             
     `
     const sorting = allData.sort((a, b) => b.total_view - a.total_view);
     const allNews = document.getElementById('all-news');
     allNews.innerHTML = '';
     allData.forEach(data => {
-
+     
         const div = document.createElement('div');
 
         div.classList.add('col-lg-6', 'col-sm-12', 'col-md-12',);
@@ -62,7 +62,7 @@ const allNewsDisplay = (allData) => {
         <div onclick="newsDetailLoad('${data._id}')" class="card mb-3" style="max-width: 540px;" data-bs-toggle="modal" data-bs-target="#detailModal">
        <div class="row g-0">
        <div class="col-md-4">
-       <img src="${data.thumbnail_url }" class=" w-100 h-100 rounded-start" alt="...">
+       <img src="${data.thumbnail_url}" class=" w-100 h-100 rounded-start" alt="...">
        </div>
        <div class="col-md-8">
        <div class="card-body">

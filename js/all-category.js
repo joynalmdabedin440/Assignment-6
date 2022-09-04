@@ -5,6 +5,7 @@ const allCategoryLoad = () => {
         .then(res => res.json())
         .then(data => allCategoryDisplay(data.data.news_category))
         .catch(error => console.log(error))
+    
 }
 
 // category append section
@@ -16,11 +17,13 @@ const allCategoryDisplay = (categories) => {
         div.classList.add('col-lg-1', 'col-sm-6', 'col-md-4');
         div.innerHTML = ` 
         <button onclick="allNewsLoad('${category.category_id}')" class="m-2 gap-2 border-0 bg-white fs-4">${category.category_name
-            }</button>
-        
+            }
+            </button>      
         `;
         home.appendChild(div)
     });
+
+   
 }
 
 // news profile data load section
@@ -34,6 +37,7 @@ const allNewsLoad = (id) => {
 
 // news display section
 const allNewsDisplay = (allData) => {
+    console.log(allData.length);
     const allNews = document.getElementById('all-news');
     allNews.innerHTML = '';
     allData.forEach(data => {
@@ -51,7 +55,7 @@ const allNewsDisplay = (allData) => {
        <div class="col-md-8">
        <div class="card-body">
         <h5 class="card-title">${data.title}</h5>
-        <p class="card-text" >${data.details.slice(0, 200)
+        <p class="card-text elpsis" >${data.details
             }</p>
         <div class="d-flex justify-content-between">
             <div class="d-flex">
@@ -73,6 +77,7 @@ const allNewsDisplay = (allData) => {
     `
         allNews.appendChild(div);
     });
+    toggleSpinner(false);
 
 }
 
@@ -105,6 +110,16 @@ const modalOpen = (data) => {
      }</p>
     `
 
+}
+
+// add loader
+const toggleSpinner = isLoading => {
+    const loaderSection = document.getElementById('loader');
+    if (isLoading===true) {
+        loaderSection.classList.remove('d-none')
+    } else {
+      loaderSection.classList.add('d-none')  
+    }
 }
 
 allCategoryLoad();

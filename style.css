@@ -1,5 +1,17 @@
+body{
+    background-color: darkgrey;
+}
 .elpsis{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.bg{
+    background-color: darkgrey;
+}
+.div{
+    background-color: aqua;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
 }

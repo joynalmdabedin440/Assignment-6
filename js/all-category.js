@@ -1,6 +1,6 @@
 // category data load section
 const allCategoryLoad = () => {
-    const url = ` https://openapi.programming-hero.com/api/news/categories`
+    const url = `  https://openapi.programming-hero.com/api/news/categories`
     fetch(url)
         .then(res => res.json())
         .then(data => allCategoryDisplay(data.data.news_category))
@@ -16,7 +16,7 @@ const allCategoryDisplay = (categories) => {
         const div = document.createElement('div');
         div.classList.add('col-lg-1', 'col-sm-6', 'col-md-4');
         div.innerHTML = ` 
-        <button onclick="allNewsLoad('${category.category_id}')" class="m-2 gap-2 border-0 bg-white fs-4">${category.category_name
+        <button onclick="allNewsLoad('${category.category_id}')" class="m-2 text-white border-0 bg fs-4">${category.category_name
             }
             </button>      
         `;
@@ -38,6 +38,7 @@ const allNewsLoad = (id) => {
 // news display section
 const allNewsDisplay = (allData) => {
     console.log(allData.length);
+    
     const allNews = document.getElementById('all-news');
     allNews.innerHTML = '';
     allData.forEach(data => {

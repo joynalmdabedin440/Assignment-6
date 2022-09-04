@@ -5,25 +5,27 @@ const allCategoryLoad = () => {
         .then(res => res.json())
         .then(data => allCategoryDisplay(data.data.news_category))
         .catch(error => console.log(error))
-    
+
 }
 
 // category append section
 const allCategoryDisplay = (categories) => {
     const home = document.getElementById('home');
 
+
     categories.forEach(category => {
+
         const div = document.createElement('div');
         div.classList.add('col-lg-1', 'col-sm-6', 'col-md-4');
         div.innerHTML = ` 
-        <button onclick="allNewsLoad('${category.category_id}')" class="m-2 text-white border-0 bg fs-4">${category.category_name
+        <button onclick="${toggleSpinner(true)};
+     allNewsLoad('${category.category_id}')" class="m-2 text-white border-0 bg fs-4">${category.category_name
             }
             </button>      
         `;
         home.appendChild(div)
     });
 
-   
 }
 
 // news profile data load section
@@ -33,17 +35,24 @@ const allNewsLoad = (id) => {
     fetch(url)
         .then(res => res.json())
         .then(data => allNewsDisplay(data.data))
+        .catch(error => console.log(error))
 }
+
+// data counter
+const newsCount = document.getElementById('news-count');
+
 
 // news display section
 const allNewsDisplay = (allData) => {
-    console.log(allData);
-    const sorting=allData.sort((a, b) => b.total_view - a.total_view);
 
+    newsCount.innerHTML = `
+           <h3>${allData.length}</h3>
+            
+    `
+    const sorting = allData.sort((a, b) => b.total_view - a.total_view);
     const allNews = document.getElementById('all-news');
     allNews.innerHTML = '';
     allData.forEach(data => {
-        
 
         const div = document.createElement('div');
 
@@ -53,7 +62,7 @@ const allNewsDisplay = (allData) => {
         <div onclick="newsDetailLoad('${data._id}')" class="card mb-3" style="max-width: 540px;" data-bs-toggle="modal" data-bs-target="#detailModal">
        <div class="row g-0">
        <div class="col-md-4">
-       <img src="${data.thumbnail_url}" class=" w-100 h-100 rounded-start" alt="...">
+       <img src="${data.thumbnail_url }" class=" w-100 h-100 rounded-start" alt="...">
        </div>
        <div class="col-md-8">
        <div class="card-body">
@@ -81,16 +90,15 @@ const allNewsDisplay = (allData) => {
         allNews.appendChild(div);
     });
     toggleSpinner(false);
-
 }
 
 // news open in modal section
 const newsDetailLoad = (id) => {
     const url = `https://openapi.programming-hero.com/api/news/${id}`
-    
+
     fetch(url)
         .then(res => res.json())
-        .then(data => modalOpen (data.data))
+        .then(data => modalOpen(data.data))
         .catch(error => console.log(error))
 }
 const modalOpen = (data) => {
@@ -100,17 +108,17 @@ const modalOpen = (data) => {
     modalBody.innerHTML = `
      <img class="w-100" src="${data[0].image_url}" alt="">
 
-     <h3>${data[0].author.name ? data[0].author.name:'Name not Found'
-     }</h3>
-     <p>${data[0].author.published_date ? data[0].author.published_date:'Pubshil date not Found'
-     }</p>
+     <h3>${data[0].author.name ? data[0].author.name : 'Name not Found'
+        }</h3>
+     <p>${data[0].author.published_date ? data[0].author.published_date : 'Pubshil date not Found'
+        }</p>
      <p>view: ${data[0].total_view
-        ? data[0].total_view
-        :'No viewer Found'
-     }</p>
+            ? data[0].total_view
+            : 'No viewer Found'
+        }</p>
 
      <p>${data[0].details
-     }</p>
+        }</p>
     `
 
 }
@@ -118,11 +126,11 @@ const modalOpen = (data) => {
 // add loader
 const toggleSpinner = isLoading => {
     const loaderSection = document.getElementById('loader');
-    if (isLoading===true) {
+    if (isLoading === true) {
         loaderSection.classList.remove('d-none')
     } else {
-      loaderSection.classList.add('d-none')  
+        loaderSection.classList.add('d-none')
     }
 }
-
+allNewsLoad('08');
 allCategoryLoad();
